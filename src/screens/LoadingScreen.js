@@ -13,22 +13,20 @@ const alto = Dimensions.get('window').height;
 class LoadingScreen extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      users:'',
-      isExist:false,
-      uid:'',
-    }
-  };
-  
+    this.state = {
+      users: '',
+      isExist: false,
+      uid: '',
+    };
+  }
+
   static cardStyle = {
     backgroundColor: '#212121',
   };
 
   componentDidMount() {
-
-
     this.getUsers();
-  /*  if (this.props.Reducers.state.loggedIn === true) {
+    /*  if (this.props.Reducers.state.loggedIn === true) {
       console.log('yes');
       this.props.navigation.navigate('App');
       console.log(this.props.Reducers.state.userInfo.user, 'PROERTEIS');
@@ -36,52 +34,52 @@ class LoadingScreen extends Component {
       this.props.navigation.navigate('Login');
     } */
   }
-  getUsers =()=>{
+  getUsers = () => {
     console.log(this.props.Reducers.state.userInfo);
     db.collection('users')
-    .get({})
-    .then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        if(this.props.Reducers.state.userInfo.user.email == doc.data().email){
-          this.setState({isExist:true})
-        }else{
-          console.log('el usuario no existe');
-          
-        };
+      .get({})
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          if (
+            this.props.Reducers.state.userInfo.user.email == doc.data().email
+          ) {
+            this.setState({isExist: true});
+          } else {
+            console.log('el usuario no existe');
+          }
+        });
+
+        if (this.state.isExist) {
+          this.props.navigation.navigate('App');
+          console.log('YA EXISTE');
+          console.log(this.state.users, 'DATA');
+        } else {
+          this.setState({users: this.props.Reducers.state.userInfo});
+          this.addUser(this.state);
+          this.props.navigation.navigate('App');
+        }
+      })
+      .catch(error => {
+        console.error('Error adding document: ', error);
       });
-  
-    if(this.state.isExist){
-      this.props.navigation.navigate('App');
-      console.log('YA EXISTE')
-      console.log(this.state.users,'DATA');
-    }else{
-      this.setState({users: this.props.Reducers.state.userInfo})
-      this.addUser(this.state)
-      
-      this.props.navigation.navigate('App')
-    }
-    })
-    .catch(error => {
-      console.error('Error adding document: ', error);
-    });
-  }
+  };
 
-  addUser=(data)=>{
-    console.log(data.users.user,'DATA');
-       db.collection("users").add({
-      color: "red",
-      email: data.users.user.email,
-      spotId: 0,
-      username:data.users.user.name
-  })
-  .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
-  })
-  .catch(function(error) {
-      console.error("Error adding document: ", error);
-  });   
-  }
-
+  addUser = data => {
+    console.log(data.users.user, 'DATA');
+    db.collection('users')
+      .add({
+        color: 'red',
+        email: data.users.user.email,
+        spotId: '',
+        username: data.users.user.name,
+      })
+      .then(function(docRef) {
+        console.log('Document written with ID: ', docRef.id);
+      })
+      .catch(function(error) {
+        console.error('Error adding document: ', error);
+      });
+  };
 
   render() {
     console.log(this.props, 'NAZI');

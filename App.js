@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import AppNavigator from './appNavigator';
 
 class App extends Component {
+
   render() {
     return (
       <Provider store={store}>
