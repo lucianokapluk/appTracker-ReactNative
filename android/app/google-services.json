@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "720146341436",
+    "firebase_url": "https://my-gps-94a6c.firebaseio.com",
+    "project_id": "my-gps-94a6c",
+    "storage_bucket": "my-gps-94a6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720146341436:android:c6df74d9dc804838baad39",
+        "android_client_info": {
+          "package_name": "com.apptrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720146341436-im6c206me2dcttfb8n10m0tknnb4tfd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apptrack",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7sg2QE8LR3UadUzVvHEHM7_60VvHICSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720146341436-84upn5dj20uf7ol2h3855hm942enkis4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720146341436:android:6aa821137527787bbaad39",
+        "android_client_info": {
+          "package_name": "moiikai.my_gps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "720146341436-avbkqevbrgei52tde9qmge2pof505plj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "moiikai.my_gps",
+            "certificate_hash": "dad8e22cc1e9efefa49b0790c3bd99ed2231feee"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7sg2QE8LR3UadUzVvHEHM7_60VvHICSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "720146341436-84upn5dj20uf7ol2h3855hm942enkis4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
