@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 
-import {
-  createDrawerNavigator,
-  createStackNavigator,
-  createBottomTabNavigator,
-  createSwitchNavigator,
-} from 'react-navigation';
+import {createStackNavigator, createSwitchNavigator} from 'react-navigation';
 
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import {Text} from 'react-native';
 import SignOut from './src/components/signOut';
 
 const HomeStack = createStackNavigator(
@@ -37,7 +31,7 @@ const HomeStack = createStackNavigator(
         textAlign: 'center',
       },
     },
-    cardStyle: {backgroundColor: '#212121'},
+    cardStyle: {backgroundColor: '#2D2D2D'},
   },
 );
 
@@ -64,7 +58,7 @@ const LoginStack = createStackNavigator(
         textAlign: 'center',
       },
     },
-    cardStyle: {backgroundColor: '#212121'},
+    cardStyle: {backgroundColor: '#2D2D2D'},
   },
 );
 const AppNavigator = createSwitchNavigator(

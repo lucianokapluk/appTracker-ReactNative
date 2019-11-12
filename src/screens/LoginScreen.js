@@ -1,17 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   TouchableOpacity,
   Linking,
   Image,
 } from 'react-native';
-import db from '../config';
+
 import {connect} from 'react-redux';
 import firebase from 'firebase';
 import {
@@ -94,6 +90,7 @@ class LoginScreen extends Component {
   }; */
 
   render() {
+    console.disableYellowBox = true;
     return (
       <Fragment>
         <View style={styles.titleContainer}>

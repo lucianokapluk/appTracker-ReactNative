@@ -4,18 +4,16 @@ import {
   Text,
   View,
   ActivityIndicator,
+  Alert,
+  Linking,
   Dimensions,
 } from 'react-native';
 import {connect} from 'react-redux';
 import db from '../config';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from 'react-native-google-signin';
+import {GoogleSignin} from 'react-native-google-signin';
 const ancho = Dimensions.get('window').width;
 const alto = Dimensions.get('window').height;
-import firebase from 'firebase';
+
 class LoadingScreen extends Component {
   constructor(props) {
     super(props);
@@ -74,9 +72,24 @@ class LoadingScreen extends Component {
           this.props.navigation.navigate('App');
         } else {
           //this.addUser(this.state);
-          alert(
-            'Este usuario no esta registrado, visite https://my-gps-94a6c.firebaseapp.com/ para registrarse',
+          Alert.alert(
+            'Upss!',
+            'Este usuario no esta registrado',
+            [
+              {
+                text: 'Registrar',
+                onPress: () =>
+                  Linking.openURL('https://my-gps-94a6c.firebaseapp.com/'),
+              },
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
           );
+
           this.signOut();
           this.props.navigation.navigate('Login');
         }

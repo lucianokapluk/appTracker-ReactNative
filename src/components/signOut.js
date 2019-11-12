@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {GoogleSignin} from 'react-native-google-signin';
 import {withNavigation} from 'react-navigation';
@@ -24,7 +24,7 @@ class SignOut extends Component {
     return (
       <View>
         <TouchableOpacity onPress={() => this.signOut()} title={'oit'}>
-          <Text style={{color: 'blue', paddingRight: 10, fontSize: 15}}>
+          <Text style={{color: '#31AEB0', paddingRight: 10, fontSize: 15}}>
             Salir
           </Text>
         </TouchableOpacity>

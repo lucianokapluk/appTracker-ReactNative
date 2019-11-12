@@ -1,19 +1,10 @@
 import React, {Component} from 'react';
 import db from '../config';
-import Firebase from 'firebase';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from 'react-native-google-signin';
 import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator,
-  Dimensions,
   Image,
-  Button,
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
@@ -51,10 +42,11 @@ class HomeScreen extends Component {
   start = () => {
     let timer = setInterval(this.tick, 1000);
     this.setState({timer});
+    this.geoloca();
   };
 
   off = () => {
-    this.setState({on: false});
+    this.setState({on: false, counter: 0});
     clearInterval(this.state.timer);
   };
   on = () => {
@@ -139,18 +131,23 @@ class HomeScreen extends Component {
         <View style={styles.emailContainer}>
           <Text style={styles.email}> {this.state.user.name}</Text>
         </View>
-
+        {this.state.on ? (
+          <Text style={styles.coords}>Tracking..</Text>
+        ) : (
+          <Text />
+        )}
         <View style={styles.buttonsContainer}>
           <View style={styles.startCont}>
             <TouchableOpacity onPress={() => this.on()}>
-              <Text style={styles.start}>Start</Text>
+              <Text style={styles.start}>ON</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity title={'OFF'} onPress={() => this.off()}>
-              <Text style={styles.start}>End</Text>
+            <TouchableOpacity onPress={() => this.off()}>
+              <Text style={styles.start}>OFF</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.counter}>{this.state.counter}</Text>
+
+          <Text style={styles.counter}>{this.state.counter}s</Text>
           <Text style={styles.coords}>{this.state.coords}</Text>
         </View>
       </View>
@@ -164,21 +161,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 110,
+    height: 110,
+    borderRadius: 60,
   },
   emailContainer: {
     color: 'white',
     flexDirection: 'row',
+
+    borderBottomWidth: 1,
+
     justifyContent: 'center',
   },
   email: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 23,
+    marginBottom: 5,
   },
   buttonsContainer: {
-    marginTop: 20,
+    marginTop: 50,
     height: 400,
   },
   startCont: {
@@ -186,7 +187,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   start: {
-    backgroundColor: 'red',
+    backgroundColor: '#3191B0',
+    color: 'white',
     fontSize: 40,
     paddingVertical: 5,
     paddingHorizontal: 10,
