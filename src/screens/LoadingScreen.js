@@ -8,13 +8,18 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import db from '../config';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from 'react-native-google-signin';
 const ancho = Dimensions.get('window').width;
 const alto = Dimensions.get('window').height;
+import firebase from 'firebase';
 class LoadingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: '',
       isExist: false,
       uid: '',
     };
@@ -34,8 +39,23 @@ class LoadingScreen extends Component {
       this.props.navigation.navigate('Login');
     } */
   }
+  signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      this.props.dispatch({
+        type: 'LOGEARSE',
+        payload: {
+          state: {userInfo: null, loggedIn: false},
+        },
+      });
+      this.props.navigation.navigate('Login');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   getUsers = () => {
-    console.log(this.props.Reducers.state.userInfo);
     db.collection('users')
       .get({})
       .then(querySnapshot => {
@@ -43,6 +63,7 @@ class LoadingScreen extends Component {
           if (
             this.props.Reducers.state.userInfo.user.email == doc.data().email
           ) {
+            console.log(doc, 'DOOOOOOOC');
             this.setState({isExist: true});
           } else {
             console.log('el usuario no existe');
@@ -51,12 +72,13 @@ class LoadingScreen extends Component {
 
         if (this.state.isExist) {
           this.props.navigation.navigate('App');
-          console.log('YA EXISTE');
-          console.log(this.state.users, 'DATA');
         } else {
-          this.setState({users: this.props.Reducers.state.userInfo});
-          this.addUser(this.state);
-          this.props.navigation.navigate('App');
+          //this.addUser(this.state);
+          alert(
+            'Este usuario no esta registrado, visite https://my-gps-94a6c.firebaseapp.com/ para registrarse',
+          );
+          this.signOut();
+          this.props.navigation.navigate('Login');
         }
       })
       .catch(error => {
@@ -64,8 +86,7 @@ class LoadingScreen extends Component {
       });
   };
 
-  addUser = data => {
-    console.log(data.users.user, 'DATA');
+  /*   addUser = data => {
     db.collection('users')
       .add({
         color: 'red',
@@ -80,9 +101,8 @@ class LoadingScreen extends Component {
         console.error('Error adding document: ', error);
       });
   };
-
+ */
   render() {
-    console.log(this.props, 'NAZI');
     console.disableYellowBox = true;
     return (
       <View style={{backgroundColor: '#212121', width: ancho, height: alto}}>

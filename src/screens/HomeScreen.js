@@ -12,7 +12,9 @@ import {
   View,
   ActivityIndicator,
   Dimensions,
+  Image,
   Button,
+  TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
 import {connect} from 'react-redux';
@@ -28,6 +30,8 @@ class HomeScreen extends Component {
       timer: null,
       counter: 0,
       uid: '',
+      coords: '',
+      user: '',
     };
   }
 
@@ -57,21 +61,7 @@ class HomeScreen extends Component {
     this.setState({on: true});
     this.start();
   };
-  signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      this.props.dispatch({
-        type: 'LOGEARSE',
-        payload: {
-          state: {userInfo: null, loggedIn: false},
-        },
-      });
-      this.props.navigation.navigate('Login');
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
   geoloca = async () => {
     console.log('tap');
     if (this.requestLocationPermission()) {
@@ -92,6 +82,14 @@ class HomeScreen extends Component {
             .catch(function(error) {
               console.error('Error adding document: ', error);
             });
+          this.setState({
+            coords:
+              '[ ' +
+              position.coords.latitude +
+              ' ºS, ' +
+              position.coords.longitude +
+              ' ºW]',
+          });
           console.log(position.coords.latitude, position.coords.longitude);
         },
         error => {
@@ -103,17 +101,7 @@ class HomeScreen extends Component {
     }
   };
   componentDidMount() {
-    db.collection('users')
-      .get({})
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          if (
-            this.props.Reducers.state.userInfo.user.email == doc.data().email
-          ) {
-            this.setState({uid: doc.id});
-          }
-        });
-      });
+    this.setState({user: this.props.Reducers.state.userInfo.user});
   }
 
   requestLocationPermission = async () => {
@@ -136,22 +124,87 @@ class HomeScreen extends Component {
     }
   };
   render() {
+    console.log(this.props, 'ACCACASCAASACS');
+    //this.props.Reducers.state.userInfo.user;
     return (
       <View>
-        <Text>It Trolls</Text>
-        <View>
-          <Button title={'ON'} onPress={() => this.on()}>
-            {' '}
-          </Button>
-          <Button title={'OFF'} onPress={() => this.off()}>
-            {' '}
-          </Button>
-          <Button onPress={() => this.signOut()} title={'oit'} />
+        <View style={styles.avatarContainer}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri: this.state.user.photo,
+            }}
+          />
+        </View>
+        <View style={styles.emailContainer}>
+          <Text style={styles.email}> {this.state.user.name}</Text>
+        </View>
+
+        <View style={styles.buttonsContainer}>
+          <View style={styles.startCont}>
+            <TouchableOpacity onPress={() => this.on()}>
+              <Text style={styles.start}>Start</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity title={'OFF'} onPress={() => this.off()}>
+              <Text style={styles.start}>End</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.counter}>{this.state.counter}</Text>
+          <Text style={styles.coords}>{this.state.coords}</Text>
         </View>
       </View>
     );
   }
 }
+const styles = StyleSheet.create({
+  avatarContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  emailContainer: {
+    color: 'white',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  email: {
+    color: 'white',
+    fontSize: 18,
+  },
+  buttonsContainer: {
+    marginTop: 20,
+    height: 400,
+  },
+  startCont: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  start: {
+    backgroundColor: 'red',
+    fontSize: 40,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 30,
+  },
+  counter: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 30,
+    marginTop: -50,
+  },
+  coords: {
+    alignSelf: 'center',
+    color: 'white',
+    marginTop: 50,
+    fontSize: 18,
+  },
+});
 const mapStateToProps = state => {
   return state;
 };

@@ -7,10 +7,13 @@ import {
   Text,
   StatusBar,
   Button,
+  TouchableOpacity,
+  Linking,
   Image,
 } from 'react-native';
 import db from '../config';
 import {connect} from 'react-redux';
+import firebase from 'firebase';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -25,16 +28,18 @@ class LoginScreen extends Component {
       loggedIn: false,
     };
   }
+  static cardStyle = {
+    backgroundColor: '#212121',
+  };
   componentDidMount() {
     GoogleSignin.configure({
       webClientId:
         '720146341436-84upn5dj20uf7ol2h3855hm942enkis4.apps.googleusercontent.com',
     });
-
   }
 
   _signIn = async () => {
- try {
+    try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo, loggedIn: true});
@@ -67,7 +72,7 @@ class LoginScreen extends Component {
     }
   };
 
-  getCurrentUserInfo = async () => {
+  /*   getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({userInfo});
@@ -86,23 +91,76 @@ class LoginScreen extends Component {
         this.setState({loggedIn: false});
       }
     }
-  };
+  }; */
 
- 
   render() {
     return (
       <Fragment>
-        <GoogleSigninButton
-          style={{width: 192, height: 48}}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={this._signIn}
-          disabled={this.state.isSigninInProgress}
-        />
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>AppTracking</Text>
+        </View>
+
+        <View style={styles.iconContainer}>
+          <Image
+            style={{width: 150, height: 150}}
+            source={require('../../assets/ubi.png')}
+          />
+        </View>
+
+        <View style={styles.parrafo}>
+          <GoogleSigninButton
+            style={{width: 192, height: 48}}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={this._signIn}
+            disabled={this.state.isSigninInProgress}
+          />
+        </View>
+        <View style={styles.parrafo}>
+          <Text style={{color: 'white'}}>
+            Por favor inicia sesion para poder comenzar a trackear!
+          </Text>
+        </View>
+        <View style={styles.parrafo}>
+          <TouchableOpacity
+            style={styles.register}
+            onPress={() =>
+              Linking.openURL('https://my-gps-94a6c.firebaseapp.com/')
+            }>
+            <Text style={{color: 'black'}}>Registrarse</Text>
+          </TouchableOpacity>
+        </View>
       </Fragment>
     );
   }
 }
+const styles = StyleSheet.create({
+  titleContainer: {
+    marginTop: 20,
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  title: {
+    color: 'white',
+    fontSize: 40,
+  },
+  iconContainer: {
+    height: 170,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  parrafo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  register: {
+    backgroundColor: '#98B5DB',
+    borderRadius: 20,
+    padding: 10,
+    marginTop: 100,
+  },
+});
 const mapStateToProps = state => {
   return state;
 };
